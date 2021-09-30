@@ -13,6 +13,12 @@ public class InteractionUseCase {
         gatewayB.send("Two");
     }
 
+    public void sendString(String value) {
+        if (!value.equals("val")) {
+            gatewayA.send(value);
+        }
+    }
+
     public void send(int option) {
         if (option % 2 == 0) {
             gatewayA.send("One");

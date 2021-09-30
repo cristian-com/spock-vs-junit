@@ -54,4 +54,40 @@ class InteractionsSpec extends Specification {
         then:
         (_..4) * gatewayA.send(_)
     }
+
+    def "Exact parameters matching" () {
+        given:
+        def value = "value"
+        when:
+        useCase.sendString(value)
+        then:
+        1 * gatewayA.send("value")
+    }
+
+    def "Parameters different of" () {
+        given:
+        def value = "val"
+        when:
+        useCase.sendString(value)
+        then:
+        1 * gatewayA.send(!"value")
+    }
+
+    def "Method call any single argument" () {
+        given:
+        def value = "val"
+        when:
+        useCase.sendString(value)
+        then:
+        1 * gatewayA.send(_)
+    }
+
+    def "Method call any list argument" () {
+        given:
+        def value = "val"
+        when:
+        useCase.sendString(value)
+        then:
+        1 * gatewayA.send(*_)
+    }
 }
