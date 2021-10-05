@@ -14,4 +14,8 @@ public interface Dependency {
         throw new RuntimeException();
     }
 
+    default String objectMethod(Object param) {
+        return param.getClass().getName();
+    }
+
 }
