@@ -1,13 +1,7 @@
 package spock
 
-import cristian.com.spock.introduction.AddItemToBasketUseCase
-import cristian.com.spock.introduction.Basket
-import cristian.com.spock.introduction.BasketRepository
-import cristian.com.spock.introduction.Category
-import cristian.com.spock.introduction.Item
-import cristian.com.spock.introduction.ItemRepository
+import cristian.com.spock.introduction.*
 import spock.lang.Specification
-import spock.util.concurrent.AsyncConditions
 
 class AddElectronicItemsToBasketSpec extends Specification {
 
@@ -17,13 +11,13 @@ class AddElectronicItemsToBasketSpec extends Specification {
 
     def "Add item" () {
         given:
-        var basket = new Basket(1);
+        var basket = new Basket(1)
         var item = Item.builder()
                 .id(1)
                 .description("McBook")
                 .category(Category.ELECTRONICS)
-                .build();
-        int quantity = 3;
+                .build()
+        int quantity = 3
         itemRepository.findItem(item.id) >> item
         basketRepository.findBasket(basket.id) >> basket
         basketRepository.save(basket) >> { Basket it -> return it }
