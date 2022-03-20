@@ -7,6 +7,7 @@ import cristian.com.spock.introduction.Category
 import cristian.com.spock.introduction.Item
 import cristian.com.spock.introduction.ItemRepository
 import spock.lang.Specification
+import spock.util.concurrent.AsyncConditions
 
 class AddElectronicItemsToBasketSpec extends Specification {
 

@@ -23,7 +23,10 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNotNull;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -84,21 +87,61 @@ public class Stubbing {
 
     @Test
     void whenAnyCommonClasses() {
-        // Given
-        int order = 0;
-        List<Object> input = List.of(DUMMY_BOOLEAN, DUMMY_STRING, DUMMY_INT, DUMMY_LIST, DUMMY_SET, DUMMY_MAP);
-        when(dependencyB.objectMethod(anyBoolean())).thenReturn("" + order++);
-        when(dependencyB.objectMethod(anyString())).thenReturn("" + order++);
-        when(dependencyB.objectMethod(anyInt())).thenReturn("" + order++);
-        when(dependencyB.objectMethod(anyList())).thenReturn("" + order++);
-        when(dependencyB.objectMethod(anySet())).thenReturn("" + order++);
-        when(dependencyB.objectMethod(anyMap())).thenReturn("" + order);
+        Map<Object, String> input = Map.of(DUMMY_BOOLEAN, "boolean",
+                DUMMY_STRING, "string",
+                DUMMY_INT, "int",
+                DUMMY_LIST, "list",
+                DUMMY_SET, "set",
+                DUMMY_MAP, "map");
 
-        for (int index = 0; index < input.size(); index++) {
-            // When
-            String response = useCase.objectMethod(input.get(index));
-            // Then
-            assertEquals(response, "" + index);
-        }
+        when(dependencyB.objectMethod(anyBoolean())).thenReturn(input.get(DUMMY_BOOLEAN));
+        when(dependencyB.objectMethod(anyString())).thenReturn(input.get(DUMMY_STRING));
+        when(dependencyB.objectMethod(anyInt())).thenReturn(input.get(DUMMY_INT));
+        when(dependencyB.objectMethod(anyList())).thenReturn(input.get(DUMMY_LIST));
+        when(dependencyB.objectMethod(anySet())).thenReturn(input.get(DUMMY_SET));
+        when(dependencyB.objectMethod(anyMap())).thenReturn(input.get(DUMMY_MAP));
+
+        assertEquals(input.get(DUMMY_BOOLEAN), useCase.objectMethod(DUMMY_BOOLEAN));
+        assertEquals(input.get(DUMMY_STRING), useCase.objectMethod(DUMMY_STRING));
+        assertEquals(input.get(DUMMY_INT), useCase.objectMethod(DUMMY_INT));
+        assertEquals(input.get(DUMMY_LIST), useCase.objectMethod(DUMMY_LIST));
+        assertEquals(input.get(DUMMY_SET), useCase.objectMethod(DUMMY_SET));
+        assertEquals(input.get(DUMMY_MAP), useCase.objectMethod(DUMMY_MAP));
     }
+
+    @Test
+    void whenIsEqual() {
+        // Given
+        String expectedResult = DUMMY_INT.getClass().getName();
+        when(dependencyB.objectMethod(eq(DUMMY_STRING))).thenReturn(expectedResult);
+        // When
+        String response = useCase.objectMethod(DUMMY_STRING);
+        // Then
+        assertEquals(response, expectedResult);
+    }
+
+    @Test
+    void whenIsNotNull() {
+        // Given
+        String input = DUMMY_STRING;
+        String expectedResult = DUMMY_INT.getClass().getName();
+        when(dependencyB.objectMethod(isNotNull())).thenReturn(expectedResult);
+        // When
+        String response = useCase.objectMethod(input);
+        // Then
+        assertEquals(response, expectedResult);
+    }
+
+    @Test
+    void whenIsNull() {
+        // Given
+        String input = null;
+        String expectedResult = DUMMY_INT.getClass().getName();
+        when(dependencyB.objectMethod(isNull())).thenReturn(expectedResult);
+        // When
+        String response = useCase.objectMethod(input);
+        // Then
+        assertEquals(response, expectedResult);
+    }
+
 }

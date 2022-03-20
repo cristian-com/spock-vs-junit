@@ -66,7 +66,7 @@ class InteractionsSpec extends Specification {
 
     def "Parameters different of" () {
         given:
-        def value = "val"
+        def value = "hello"
         when:
         useCase.sendString(value)
         then:
@@ -75,7 +75,7 @@ class InteractionsSpec extends Specification {
 
     def "Method call any single argument" () {
         given:
-        def value = "val"
+        def value = "value"
         when:
         useCase.sendString(value)
         then:
@@ -84,7 +84,7 @@ class InteractionsSpec extends Specification {
 
     def "Method call any list argument" () {
         given:
-        def value = "val"
+        def value = "value"
         when:
         useCase.sendString(value)
         then:
